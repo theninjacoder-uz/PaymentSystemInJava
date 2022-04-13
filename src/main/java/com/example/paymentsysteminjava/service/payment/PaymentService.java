@@ -1,0 +1,130 @@
+package com.example.paymentsysteminjava.service.payment;
+
+import com.example.paymentsysteminjava.dto.response.agent.BaseAgentResponse;
+import com.example.paymentsysteminjava.dto.response.agent.BaseCheckResponse;
+import com.example.paymentsysteminjava.entity.agent.AgentDepositEntity;
+import com.example.paymentsysteminjava.entity.agent.AgentServiceEntity;
+import com.example.paymentsysteminjava.entity.merchant.MerchantEntity;
+import com.example.paymentsysteminjava.entity.merchant.MerchantServiceEntity;
+import com.example.paymentsysteminjava.entity.oson.OsonServiceEntity;
+import com.example.paymentsysteminjava.entity.transaction.TransactionEntity;
+import com.example.paymentsysteminjava.entity.transaction.TransactionState;
+import com.example.paymentsysteminjava.exception.DataNotFoundException;
+import com.example.paymentsysteminjava.repository.TransactionRepository;
+import com.example.paymentsysteminjava.repository.agent.AgentRepository;
+import com.example.paymentsysteminjava.repository.agent.AgentServiceRepository;
+import com.example.paymentsysteminjava.service.gateway.PaymeTransactionService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class PaymentService {
+
+    private final TransactionRepository transactionRepository;
+    private final AgentServiceRepository agentServiceRepository;
+    private final AgentRepository agentRepository;
+    private final PaymeTransactionService paymeTransactionService;
+
+    private final RabbitTemplate rabbitTemplate;
+
+    @Value("${rabbitMq.topic.exchange.name}")
+    private String exchangeName;
+
+    @Value("${rabbitMq.topic.route.key.name}")
+    private String routingKey;
+
+    public BaseAgentResponse pay(Long transactionId, String agentUsername){
+
+        Optional<AgentDepositEntity> agentDepositEntity = agentRepository.getAgentDepositByUsername(agentUsername);
+        Optional<TransactionEntity> optionalTransaction = transactionRepository.findById(transactionId);
+
+       // TODO: 12.04.2022 give an appropriate name to
+        if(optionalTransaction.isEmpty() || agentDepositEntity.isEmpty())
+            throw new DataNotFoundException("Bad request");
+
+        optionalTransaction.get().setTransactionState(TransactionState.PAYING.getState());
+        manageAgentDeposit(optionalTransaction.get(), agentDepositEntity.get(), false);
+
+        //todo Request to Merchant
+
+        TransactionEntity transactionEntity = payRequestToMerchant(optionalTransaction.get());
+
+        if(transactionEntity.getTransactionState() == TransactionState.PAY_ERROR.getState())
+            manageAgentDeposit(optionalTransaction.get(), agentDepositEntity.get(), true);
+
+
+        // TODO: 12.04.2022 change transaction state and save if(transaction doesnot response then put rabbitmq)
+        else if(true){
+            addTransactionToRabbitMq(transactionEntity);
+        }
+
+        return BaseCheckResponse.response(
+                transactionEntity.getAgent(),
+                transactionEntity.getMerchant(),
+                transactionEntity.getOsonServiceEntity().getMerchantServiceEntity(),
+                transactionEntity
+        );
+
+    }
+
+    private void manageAgentDeposit(TransactionEntity transaction, AgentDepositEntity agentDeposit, boolean isRollback){
+        Long serviceId = transaction.getOsonServiceEntity().getId();
+        Long agentId = transaction.getAgent().getId();
+        Optional<AgentServiceEntity> optionalAgentServiceEntity = agentServiceRepository.findByServiceIdAndAgentId(serviceId, agentId);
+
+        if(optionalAgentServiceEntity.isEmpty())
+            throw new DataNotFoundException("Agent Service not found");
+
+        double commission = optionalAgentServiceEntity.get().getCommission();
+
+        if(!isRollback)
+            calculate(agentDeposit, transaction.getTransactionAmountFromAgent(), commission);
+        else
+            calculate(agentDeposit, transaction.getTransactionAmountFromAgent(), (2 * (-1 - commission)));
+    }
+
+
+    private void calculate(
+            AgentDepositEntity agentDeposit,
+            BigDecimal transactionAmount,
+            double commission
+            ){
+
+        agentDeposit.setAmount(agentDeposit
+                .getAmount()
+                .subtract(transactionAmount.multiply(BigDecimal.valueOf(1 + commission)))
+        );
+
+        // TODO: 12.04.2022 here commission * transactionAmount should save our budget
+    }
+
+    private TransactionEntity payRequestToMerchant
+            (
+                    TransactionEntity transactionEntity
+            ) {
+        MerchantEntity merchantEntity = transactionEntity.getMerchant();
+
+        if (merchantEntity.getIsPayme()) {
+            transactionEntity = paymeTransactionService.pay
+                    (
+                            transactionEntity
+                    );
+        } else if (merchantEntity.getIsYandex()) {
+            //TODO
+        } else if (merchantEntity.getIsUcell()) {
+            //TODO
+        }
+
+        return transactionEntity;
+    }
+
+    private void addTransactionToRabbitMq(TransactionEntity transactionEntity){
+        rabbitTemplate.convertAndSend(exchangeName, routingKey, transactionEntity);
+    }
+}
