@@ -1,4 +1,4 @@
-package com.example.paymentsysteminjava.dto.merchant;
+package com.example.paymentsysteminjava.dto.payload.merchant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

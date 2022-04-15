@@ -30,6 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .addFilterBefore(filterProvider, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
+                .antMatchers("/swagger-resources/**",
+                        "/v2/api-docs**", "/webjars/**",
+                        "/swagger-ui/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/agent/**").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/user/**").permitAll()

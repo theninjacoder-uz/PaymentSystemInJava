@@ -1,6 +1,6 @@
 package com.example.paymentsysteminjava.service.agent;
 
-import com.example.paymentsysteminjava.dto.UserRegisterDto;
+import com.example.paymentsysteminjava.dto.payload.user.UserRegisterDto;
 import com.example.paymentsysteminjava.entity.agent.AgentDepositEntity;
 import com.example.paymentsysteminjava.entity.agent.AgentEntity;
 import com.example.paymentsysteminjava.entity.user.UserEntity;
@@ -9,6 +9,7 @@ import com.example.paymentsysteminjava.repository.agent.AgentDepositRepository;
 import com.example.paymentsysteminjava.repository.agent.AgentRepository;
 import com.example.paymentsysteminjava.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-@Primary
 @Service("a")
 @RequiredArgsConstructor
 public class AgentServiceImp implements UserService {

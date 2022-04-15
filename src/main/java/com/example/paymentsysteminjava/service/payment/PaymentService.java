@@ -14,6 +14,7 @@ import com.example.paymentsysteminjava.repository.TransactionRepository;
 import com.example.paymentsysteminjava.repository.agent.AgentRepository;
 import com.example.paymentsysteminjava.repository.agent.AgentServiceRepository;
 import com.example.paymentsysteminjava.service.gateway.PaymeTransactionService;
+import com.example.paymentsysteminjava.service.gateway.PaynetTransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,7 @@ public class PaymentService {
     private final AgentServiceRepository agentServiceRepository;
     private final AgentRepository agentRepository;
     private final PaymeTransactionService paymeTransactionService;
+    private final PaynetTransactionService paynetTransactionService;
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -48,15 +50,16 @@ public class PaymentService {
         if(optionalTransaction.isEmpty() || agentDepositEntity.isEmpty())
             throw new DataNotFoundException("Bad request");
 
-        optionalTransaction.get().setTransactionState(TransactionState.PAYING.getState());
-        manageAgentDeposit(optionalTransaction.get(), agentDepositEntity.get(), false);
+        TransactionEntity transactionEntity1 = optionalTransaction.get();
+        transactionEntity1.setTransactionState(TransactionState.PAYING.getState());
+        manageAgentDeposit(transactionEntity1, agentDepositEntity.get(), false);
 
         //todo Request to Merchant
 
-        TransactionEntity transactionEntity = payRequestToMerchant(optionalTransaction.get());
+        TransactionEntity transactionEntity = payRequestToMerchant(transactionEntity1);
 
         if(transactionEntity.getTransactionState() == TransactionState.PAY_ERROR.getState())
-            manageAgentDeposit(optionalTransaction.get(), agentDepositEntity.get(), true);
+            manageAgentDeposit(transactionEntity1, agentDepositEntity.get(), true);
 
 
         // TODO: 12.04.2022 change transaction state and save if(transaction doesnot response then put rabbitmq)
@@ -110,15 +113,18 @@ public class PaymentService {
             ) {
         MerchantEntity merchantEntity = transactionEntity.getMerchant();
 
-        if (merchantEntity.getIsPayme()) {
+        if (merchantEntity.isPayme()) {
             transactionEntity = paymeTransactionService.pay
                     (
                             transactionEntity
                     );
-        } else if (merchantEntity.getIsYandex()) {
+        } else if (merchantEntity.isYandex()) {
             //TODO
-        } else if (merchantEntity.getIsUcell()) {
-            //TODO
+        } else if (merchantEntity.isPaynet()) {
+            transactionEntity = paynetTransactionService.pay
+                    (
+                            transactionEntity
+                    );
         }
 
         return transactionEntity;

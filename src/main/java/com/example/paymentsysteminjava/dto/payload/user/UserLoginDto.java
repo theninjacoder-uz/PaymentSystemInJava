@@ -1,4 +1,4 @@
-package com.example.paymentsysteminjava.dto;
+package com.example.paymentsysteminjava.dto.payload.user;
 
 import lombok.Getter;
 import lombok.Setter;

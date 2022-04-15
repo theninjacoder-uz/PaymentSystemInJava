@@ -19,13 +19,14 @@ public class PaymeCheckTransactioniResponseDto {
     @JsonIgnoreProperties(ignoreUnknown = true)
     @Getter
     @Setter
-    public class Result{
+    public static class Result{
         private Timestamp current_time;
         private int transaction;
         private int state;
 
         private List<Receivers> receivers;
         @JsonIgnoreProperties(ignoreUnknown = true)
+        static
         class Receivers{
             private UUID id;
             private BigDecimal amount;

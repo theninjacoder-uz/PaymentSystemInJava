@@ -1,9 +1,10 @@
-package com.example.paymentsysteminjava.dto;
+package com.example.paymentsysteminjava.dto.payload.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
 import java.util.List;
 
 @AllArgsConstructor

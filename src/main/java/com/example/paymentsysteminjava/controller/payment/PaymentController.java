@@ -3,6 +3,7 @@ package com.example.paymentsysteminjava.controller.payment;
 import com.example.paymentsysteminjava.dto.response.agent.BaseAgentResponse;
 import com.example.paymentsysteminjava.service.payment.PaymentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,12 +19,16 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PreAuthorize("hasRole('ROLE_AGENT')")
-    @PostMapping("/pay")
-    public void pay(
-            @RequestParam("id") Long id,
+    @PostMapping(value = "/pay",
+            consumes
+                    = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_ATOM_XML_VALUE},
+            produces =
+                    {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_ATOM_XML_VALUE})
+    public BaseAgentResponse pay(
+            @RequestParam("id") Long transactionId,
             @AuthenticationPrincipal String username
-    ){
-        paymentService.pay(id, username);
+    ) {
+        return paymentService.pay(transactionId, username);
     }
 
 }

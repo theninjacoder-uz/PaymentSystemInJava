@@ -1,16 +1,18 @@
 package com.example.paymentsysteminjava.service.user;
 
-import com.example.paymentsysteminjava.dto.UserRegisterDto;
-import com.example.paymentsysteminjava.entity.agent.AgentEntity;
+import com.example.paymentsysteminjava.dto.payload.user.UserRegisterDto;
 import com.example.paymentsysteminjava.entity.user.UserEntity;
 import com.example.paymentsysteminjava.exception.LoginValidationException;
 import com.example.paymentsysteminjava.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Primary
 @Service("u")
 @RequiredArgsConstructor
 public class UserServiceImp implements UserService {

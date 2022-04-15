@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 @Setter
 public class MerchantServiceEntity extends BaseEntity {
 
+    private String name;
+
     private Long merchantServiceId;
 
     @ManyToOne

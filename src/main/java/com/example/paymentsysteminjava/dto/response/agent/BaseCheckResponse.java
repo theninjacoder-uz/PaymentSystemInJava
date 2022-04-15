@@ -1,6 +1,6 @@
 package com.example.paymentsysteminjava.dto.response.agent;
 
-import com.example.paymentsysteminjava.dto.response.agent.payme.PaynetAgentResponse;
+import com.example.paymentsysteminjava.dto.response.agent.paynet.PaynetAgentCheckResponse;
 import com.example.paymentsysteminjava.entity.agent.AgentEntity;
 import com.example.paymentsysteminjava.entity.merchant.MerchantEntity;
 import com.example.paymentsysteminjava.entity.merchant.MerchantServiceEntity;
@@ -14,8 +14,8 @@ public interface BaseCheckResponse {
             TransactionEntity transaction
     ) {
         BaseAgentResponse baseAgentResponse;
-        if (agent.getIsPaynet()) {
-            baseAgentResponse = new PaynetAgentResponse();
+        if (agent.isPaynet()) {
+            baseAgentResponse = new PaynetAgentCheckResponse();
         } else {
             baseAgentResponse = new DefaultAgentResponse();
         }

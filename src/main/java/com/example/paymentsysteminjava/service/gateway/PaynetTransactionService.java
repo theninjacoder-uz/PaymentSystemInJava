@@ -2,24 +2,21 @@ package com.example.paymentsysteminjava.service.gateway;
 
 import com.example.paymentsysteminjava.dto.payload.merchant.MerchantTransactionCheckDto;
 import com.example.paymentsysteminjava.dto.request.gateway.payme.PaymeCheckTransactionRequestDto;
+import com.example.paymentsysteminjava.dto.request.gateway.paynet.PaynetCheckTransactionRequestDto;
 import com.example.paymentsysteminjava.dto.response.gateway.payme.PaymeCheckTransactioniResponseDto;
 import com.example.paymentsysteminjava.entity.merchant.MerchantServiceEntity;
 import com.example.paymentsysteminjava.entity.transaction.TransactionEntity;
 import com.example.paymentsysteminjava.entity.transaction.TransactionState;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class PaymeTransactionService {
+public class PaynetTransactionService {
     private final RestTemplate restTemplate;
 
     public TransactionEntity createTransaction(
@@ -27,13 +24,13 @@ public class PaymeTransactionService {
             MerchantServiceEntity merchantServiceEntity
     )
     {
-        PaymeCheckTransactionRequestDto paymeCheckTransactionRequestDto =
-                new PaymeCheckTransactionRequestDto(
-                merchantServiceEntity.getId(),
-                Timestamp.valueOf(LocalDateTime.now()),
-                transactionEntity.getTransactionAccount(),
-                transactionEntity.getTransactionAmountToMerchant()
-        );
+        PaynetCheckTransactionRequestDto paynetCheckTransactionRequestDto =
+                new PaynetCheckTransactionRequestDto(
+                        merchantServiceEntity.getId(),
+                        Timestamp.valueOf(LocalDateTime.now()),
+                        transactionEntity.getTransactionAccount(),
+                        transactionEntity.getTransactionAmountToMerchant()
+                );
 
         try {
 //            PaymeCheckTransactioniResponseDto.Result result = restTemplate.postForObject(
@@ -74,7 +71,7 @@ public class PaymeTransactionService {
 
     public TransactionEntity pay(TransactionEntity transactionEntity){
         PaymeCheckTransactioniResponseDto.Result responseDto = restTemplate.postForObject(
-                "https://eo5ypg4ok6vhnzs.m.pipedream.net",
+                "https://0d68-195-158-30-84.ngrok.io//api/payme/create/transaction",
                 transactionEntity,
                 PaymeCheckTransactioniResponseDto.Result.class
         );

@@ -12,6 +12,9 @@ import javax.persistence.OneToOne;
 @Getter
 @Setter
 public class OsonServiceEntity extends BaseEntity {
+
+    private String name;
+
     @OneToOne
     private MerchantServiceEntity merchantServiceEntity;
 }

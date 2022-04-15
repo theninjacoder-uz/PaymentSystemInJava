@@ -13,6 +13,7 @@ import com.example.paymentsysteminjava.repository.agent.AgentRepository;
 import com.example.paymentsysteminjava.repository.OsonRepository;
 import com.example.paymentsysteminjava.repository.TransactionRepository;
 import com.example.paymentsysteminjava.service.gateway.PaymeTransactionService;
+import com.example.paymentsysteminjava.service.gateway.PaynetTransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class CheckTransactionService {
     private final OsonRepository osonRepository;
 //    private final MerchantRepository merchantRepository;
     private final PaymeTransactionService paymeTransactionService;
+    private final PaynetTransactionService paynetTransactionService;
     private final TransactionRepository transactionRepository;
     private final AgentRepository agentRepository;
 
@@ -38,7 +40,7 @@ public class CheckTransactionService {
         if (agentEntity == null || !agentEntity.isActive())
             throw new UsernameNotFoundException("Agent not found");
 
-        OsonServiceEntity osonServiceEntity = osonRepository.getById(defaultAgentRequest.getServiceId());
+        OsonServiceEntity osonServiceEntity = osonRepository.findById(defaultAgentRequest.getServiceId()).get();
 
         TransactionEntity transactionEntity = new TransactionEntity();
 
@@ -82,16 +84,19 @@ public class CheckTransactionService {
                     TransactionEntity transactionEntity
             ) {
 
-        if (merchantEntity.getIsPayme()) {
+        if (merchantEntity.isPayme()) {
             transactionEntity = paymeTransactionService.createTransaction
                     (
                             transactionEntity,
                             merchantServiceEntity
                     );
-        } else if (merchantEntity.getIsYandex()) {
+        } else if (merchantEntity.isClick()) {
             //TODO
-        } else if (merchantEntity.getIsUcell()) {
-            //TODO
+        } else if (merchantEntity.isPaynet()) {
+           transactionEntity = paynetTransactionService.createTransaction(
+                    transactionEntity,
+                    merchantServiceEntity
+            );
         }
 
         return transactionEntity;

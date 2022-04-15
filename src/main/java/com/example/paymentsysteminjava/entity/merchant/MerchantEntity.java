@@ -24,9 +24,21 @@ public class MerchantEntity extends BaseEntity {
 
 
     @Transient
-    private Boolean isUcell  = false;
+    private boolean isUcell;
     @Transient
-    private Boolean isYandex = false;
+    private boolean isYandex;
     @Transient
-    private Boolean isPayme  = true;
+    private boolean isPayme;
+
+    public boolean isPaynet(){
+        return (super.id == 10);
+    }
+
+    public boolean isPayme(){
+        return (super.id == 8);
+    }
+
+    public boolean isClick(){
+        return (super.id == 9);
+    }
 }

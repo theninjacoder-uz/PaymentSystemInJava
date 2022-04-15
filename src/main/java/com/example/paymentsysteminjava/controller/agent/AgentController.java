@@ -1,10 +1,9 @@
 package com.example.paymentsysteminjava.controller.agent;
 
-import com.example.paymentsysteminjava.dto.UserRegisterDto;
+import com.example.paymentsysteminjava.dto.payload.user.UserRegisterDto;
 import com.example.paymentsysteminjava.dto.response.BaseApiResponse;
-import com.example.paymentsysteminjava.service.jwt.JwtProvider;
 import com.example.paymentsysteminjava.service.user.UserService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/agent")
-@RequiredArgsConstructor
 public class AgentController {
 
+    @Autowired
     @Qualifier("a")
-    private final UserService userService;
+    private  UserService userService;
 
     @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping("/register")

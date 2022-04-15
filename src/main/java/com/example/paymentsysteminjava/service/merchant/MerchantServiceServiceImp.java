@@ -1,6 +1,6 @@
 package com.example.paymentsysteminjava.service.merchant;
 
-import com.example.paymentsysteminjava.dto.merchant.MerchantServiceRegisterDto;
+import com.example.paymentsysteminjava.dto.payload.merchant.MerchantServiceRegisterDto;
 import com.example.paymentsysteminjava.entity.merchant.MerchantEntity;
 import com.example.paymentsysteminjava.entity.merchant.MerchantServiceEntity;
 import com.example.paymentsysteminjava.repository.merchant.MerchantRepository;

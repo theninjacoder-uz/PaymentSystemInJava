@@ -1,7 +1,7 @@
 package com.example.paymentsysteminjava.service.user;
 
-import com.example.paymentsysteminjava.dto.UserLoginDto;
-import com.example.paymentsysteminjava.dto.UserRegisterDto;
+import com.example.paymentsysteminjava.dto.payload.user.UserLoginDto;
+import com.example.paymentsysteminjava.dto.payload.user.UserRegisterDto;
 import com.example.paymentsysteminjava.entity.user.UserEntity;
 import com.example.paymentsysteminjava.repository.UserRepository;
 import com.example.paymentsysteminjava.service.BaseService;

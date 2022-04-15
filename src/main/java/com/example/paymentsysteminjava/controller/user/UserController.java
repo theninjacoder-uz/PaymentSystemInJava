@@ -1,9 +1,7 @@
 package com.example.paymentsysteminjava.controller.user;
 
-import com.example.paymentsysteminjava.dto.UserRegisterDto;
-import com.example.paymentsysteminjava.service.jwt.JwtProvider;
+import com.example.paymentsysteminjava.dto.payload.user.UserRegisterDto;
 import com.example.paymentsysteminjava.service.user.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/user/")
 public class UserController {
 
+    @Autowired
     @Qualifier("u")
-    private UserService userService;
+    private  UserService userService;
 
     @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping("/add")

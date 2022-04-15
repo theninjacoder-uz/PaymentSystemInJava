@@ -1,7 +1,6 @@
 package com.example.paymentsysteminjava.controller.merchant;
 
-import com.example.paymentsysteminjava.dto.merchant.MerchantRegisterDto;
-import com.example.paymentsysteminjava.dto.merchant.MerchantServiceRegisterDto;
+import com.example.paymentsysteminjava.dto.payload.merchant.MerchantRegisterDto;
 import com.example.paymentsysteminjava.dto.response.BaseApiResponse;
 import com.example.paymentsysteminjava.service.merchant.MerchantService;
 import lombok.RequiredArgsConstructor;

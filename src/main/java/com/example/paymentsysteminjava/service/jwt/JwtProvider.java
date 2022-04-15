@@ -30,7 +30,7 @@ public class JwtProvider {
     public long refreshTokenExpiredTime;
 
     public String generateAccessToken(UserEntity userEntity) {
-        return Jwts.builder()
+        return "Bearer " + Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, accessTokenSecretKey)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + accessTokenExpiredTime))
@@ -40,7 +40,7 @@ public class JwtProvider {
     }
 
     public String generateRefreshToken(UserEntity userEntity) {
-        return Jwts.builder()
+        return "Bearer " + Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, refreshTokenSecretKey)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + refreshTokenExpiredTime))
