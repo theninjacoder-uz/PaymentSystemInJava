@@ -85,16 +85,17 @@ public class CheckTransactionService {
             ) {
 
         if (merchantEntity.isPayme()) {
-            transactionEntity = paymeTransactionService.pay
+            transactionEntity = paymeTransactionService.createTransaction
                     (
-                            transactionEntity
+                            transactionEntity,
+                            merchantServiceEntity
                     );
         } else if (merchantEntity.isClick()) {
             //TODO
         } else if (merchantEntity.isPaynet()) {
-           transactionEntity = paynetTransactionService.pay(
-                    transactionEntity
-            );
+//           transactionEntity = paynetTransactionService.(
+//                    transactionEntity
+//            );
         }
 
         return transactionEntity;

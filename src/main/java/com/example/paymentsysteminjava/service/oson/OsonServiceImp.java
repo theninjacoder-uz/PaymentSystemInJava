@@ -22,14 +22,15 @@ public class OsonServiceImp implements OsonService{
     @Override
     public Boolean add(Long merchantServiceId) {
 
-        Optional<MerchantServiceEntity> merchantServiceEntity = merchantServiceRepository.findById(merchantServiceId);
+        MerchantServiceEntity merchantServiceEntity
+                = merchantServiceRepository.findByMerchantServiceId(merchantServiceId);
 
         //TODO: 11.04.2022 use appropriate exception
-        if(merchantServiceEntity.isEmpty())
+        if(merchantServiceEntity == null)
             throw new UsernameNotFoundException("merchant service not found");
 
         OsonServiceEntity osonServiceEntity = new OsonServiceEntity();
-        osonServiceEntity.setMerchantServiceEntity(merchantServiceEntity.get());
+        osonServiceEntity.setMerchantServiceEntity(merchantServiceEntity);
         osonRepository.save(osonServiceEntity);
 
         return true;

@@ -35,7 +35,7 @@ public class MerchantEntity extends BaseEntity {
     }
 
     public boolean isPayme(){
-        return (super.id == 8);
+        return (super.id == 4);
     }
 
     public boolean isClick(){

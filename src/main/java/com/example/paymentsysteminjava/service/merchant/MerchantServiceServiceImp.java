@@ -29,6 +29,7 @@ public class MerchantServiceServiceImp implements MerchantService<MerchantServic
         MerchantServiceEntity merchantServiceEntity = new MerchantServiceEntity();
         merchantServiceEntity.setMerchantEntity(optionalMerchant.get());
         merchantServiceEntity.setMerchantServiceId(merchantServiceRegisterDto.getMerchantServiceId());
+        merchantServiceEntity.setName(merchantServiceRegisterDto.getName());
         merchantServiceRepository.save(merchantServiceEntity);
 
         return true;
