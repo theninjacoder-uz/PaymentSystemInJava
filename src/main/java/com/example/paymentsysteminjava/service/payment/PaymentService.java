@@ -33,13 +33,6 @@ public class PaymentService {
     private final PaymeTransactionService paymeTransactionService;
     private final PaynetTransactionService paynetTransactionService;
 
-    private final RabbitTemplate rabbitTemplate;
-
-    @Value("${rabbitMq.topic.exchange.name}")
-    private String exchangeName;
-
-    @Value("${rabbitMq.topic.route.key.name}")
-    private String routingKey;
 
     public BaseAgentResponse pay(Long transactionId, String agentUsername){
 
@@ -62,10 +55,6 @@ public class PaymentService {
             manageAgentDeposit(transactionEntity1, agentDepositEntity.get(), true);
 
 
-        // TODO: 12.04.2022 change transaction state and save if(transaction doesnot response then put rabbitmq)
-        else if(true){
-            addTransactionToRabbitMq(transactionEntity);
-        }
 
         return BaseCheckResponse.response(
                 transactionEntity.getAgent(),
@@ -118,19 +107,16 @@ public class PaymentService {
                     (
                             transactionEntity
                     );
-        } else if (merchantEntity.isYandex()) {
-            //TODO
         } else if (merchantEntity.isPaynet()) {
             transactionEntity = paynetTransactionService.pay
                     (
                             transactionEntity
                     );
         }
+        transactionRepository.save(transactionEntity);
 
         return transactionEntity;
     }
 
-    private void addTransactionToRabbitMq(TransactionEntity transactionEntity){
-        rabbitTemplate.convertAndSend(exchangeName, routingKey, transactionEntity);
-    }
+
 }

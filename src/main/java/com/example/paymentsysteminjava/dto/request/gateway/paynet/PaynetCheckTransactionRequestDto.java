@@ -1,13 +1,19 @@
 package com.example.paymentsysteminjava.dto.request.gateway.paynet;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class PaynetCheckTransactionRequestDto {
 
     private Long id;
@@ -30,11 +36,15 @@ public class PaynetCheckTransactionRequestDto {
         this.amount = transactionAmountToMerchant;
     }
 
-    static class Params{
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Getter
+    @Setter
+    public static class Params{
         private Long id;
         private Timestamp timestamp;
         private PaynetCheckTransactionRequestDto.Params.Account account;
         private BigDecimal amount;
+        private int state;
 
         Params(Long id, Timestamp timestamp, String account, BigDecimal amount) {
             this.id = id;
