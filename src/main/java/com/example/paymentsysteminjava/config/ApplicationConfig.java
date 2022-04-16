@@ -16,8 +16,8 @@ import java.time.Duration;
 @Configuration
 public class ApplicationConfig {
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-        return restTemplateBuilder
+    public RestTemplate restTemplate() {
+        return new RestTemplateBuilder()
                 .setConnectTimeout(Duration.ofMillis(3000))
                 .setReadTimeout(Duration.ofMillis(5000))
                 .build();

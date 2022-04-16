@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MerchantServiceRegisterDto {
+    private String name;
     private Long merchantId;
     private Long merchantServiceId;
 }

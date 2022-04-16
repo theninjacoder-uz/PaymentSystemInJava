@@ -30,55 +30,45 @@ public class PaymeTransactionService {
 
     @Value("${rabbitMq.topic.route.key.name}")
     private String routingKey;
-//    public TransactionEntity createTransaction(
-//            TransactionEntity transactionEntity,
-//            MerchantServiceEntity merchantServiceEntity
-//    )
-//    {
-//        PaymeCheckTransactionRequestDto paymeCheckTransactionRequestDto =
-//                new PaymeCheckTransactionRequestDto(
-//                merchantServiceEntity.getId(),
-//                Timestamp.valueOf(LocalDateTime.now()),
-//                transactionEntity.getTransactionAccount(),
-//                transactionEntity.getTransactionAmountToMerchant()
-//        );
+    public TransactionEntity createTransaction(
+            TransactionEntity transactionEntity,
+            MerchantServiceEntity merchantServiceEntity
+    )
+    {
+        PaymeCheckTransactionRequestDto paymeCheckTransactionRequestDto =
+                new PaymeCheckTransactionRequestDto(
+                merchantServiceEntity.getId(),
+                Timestamp.valueOf(LocalDateTime.now()),
+                transactionEntity.getTransactionAccount(),
+                transactionEntity.getTransactionAmountToMerchant()
+        );
 
-//        try {
-////            PaymeCheckTransactioniResponseDto.Result result = restTemplate.postForObject(
-////                    "https://eo5ypg4ok6vhnzs.m.pipedream.net",
-////                    paymeCheckTransactionRequestDto,
-////                    PaymeCheckTransactioniResponseDto.Result.class
-////            );
-//
-////            HttpEntity<PaymeCheckTransactionRequestDto>
-////                    paymeCheckTransactionRequestDtoHttpEntity = new HttpEntity<>(paymeCheckTransactionRequestDto);
-////
-////
-////            MerchantTransactionCheckDto result = restTemplate.exchange(
-////                    "https://eo5ypg4ok6vhnzs.m.pipedream.net",
-////                    HttpMethod.POST,
-////                    paymeCheckTransactionRequestDtoHttpEntity,
-////                    MerchantTransactionCheckDto.class
-////            ).getBody();
-//
-//            MerchantTransactionCheckDto result = new MerchantTransactionCheckDto(
-//                    "100",
-//                    transactionEntity.getTransactionState(),
-//                    1
+        try {
+//            PaymeCheckTransactioniResponseDto.Result result = restTemplate.postForObject(
+//                    "https://9989-195-158-30-84.ngrok.io/api/payme/create/transaction",
+//                    paymeCheckTransactionRequestDto,
+//                    PaymeCheckTransactioniResponseDto.Result.class
 //            );
-//
-//            if (result.getState() == 1){
-//                transactionEntity.setTransactionState(TransactionState.CHECKED.getState());
-//            } else {
-//                transactionEntity.setTransactionState(TransactionState.CHECK_ERROR.getState());
-//            }
-//            return transactionEntity;
-//
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+            PaymeCheckTransactioniResponseDto.Result result = restTemplate.postForObject(
+                    "https://eo5ypg4ok6vhnzs.m.pipedream.net",
+                    transactionEntity,
+                    PaymeCheckTransactioniResponseDto.Result.class
+            );
+
+
+            assert result != null;
+            if (result.getState() == 6){
+                transactionEntity.setTransactionState(TransactionState.CHECKED.getState());
+            } else {
+                transactionEntity.setTransactionState(TransactionState.CHECK_ERROR.getState());
+            }
+            return transactionEntity;
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public TransactionEntity pay(TransactionEntity transactionEntity){
         try{
