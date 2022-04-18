@@ -27,6 +27,7 @@ public class MerchantServiceServiceImp implements MerchantService<MerchantServic
             throw new UsernameNotFoundException("merchant not found");
 
         MerchantServiceEntity merchantServiceEntity = new MerchantServiceEntity();
+        merchantServiceEntity.setName(merchantServiceRegisterDto.getName());
         merchantServiceEntity.setMerchantEntity(optionalMerchant.get());
         merchantServiceEntity.setMerchantServiceId(merchantServiceRegisterDto.getMerchantServiceId());
         merchantServiceEntity.setName(merchantServiceRegisterDto.getName());
