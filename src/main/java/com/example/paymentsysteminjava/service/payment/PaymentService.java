@@ -44,7 +44,10 @@ public class PaymentService {
             throw new DataNotFoundException("Bad request");
 
         TransactionEntity transactionEntity1 = optionalTransaction.get();
+        if(transactionEntity1.getTransactionState() == TransactionState.CHECKED.getState())
         transactionEntity1.setTransactionState(TransactionState.PAYING.getState());
+        // TODO: 16.04.2022
+
         manageAgentDeposit(transactionEntity1, agentDepositEntity.get(), false);
 
         //todo Request to Merchant

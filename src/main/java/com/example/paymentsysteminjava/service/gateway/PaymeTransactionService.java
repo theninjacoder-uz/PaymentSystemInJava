@@ -44,20 +44,13 @@ public class PaymeTransactionService {
         );
 
         try {
-//            PaymeCheckTransactioniResponseDto.Result result = restTemplate.postForObject(
-//                    "https://9989-195-158-30-84.ngrok.io/api/payme/create/transaction",
-//                    paymeCheckTransactionRequestDto,
-//                    PaymeCheckTransactioniResponseDto.Result.class
-//            );
             PaymeCheckTransactioniResponseDto.Result result = restTemplate.postForObject(
                     "https://eo5ypg4ok6vhnzs.m.pipedream.net",
-                    transactionEntity,
+                    paymeCheckTransactionRequestDto,
                     PaymeCheckTransactioniResponseDto.Result.class
             );
 
-
-            assert result != null;
-            if (result.getState() == 6){
+            if (result.getState() == 1){
                 transactionEntity.setTransactionState(TransactionState.CHECKED.getState());
             } else {
                 transactionEntity.setTransactionState(TransactionState.CHECK_ERROR.getState());

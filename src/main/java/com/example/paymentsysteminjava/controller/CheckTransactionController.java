@@ -1,6 +1,5 @@
 package com.example.paymentsysteminjava.controller;
 
-import com.example.paymentsysteminjava.dto.request.agent.BaseAgentRequest;
 import com.example.paymentsysteminjava.dto.request.agent.DefaultAgentRequest;
 import com.example.paymentsysteminjava.dto.response.agent.BaseAgentResponse;
 import com.example.paymentsysteminjava.service.transaction.CheckTransactionService;
