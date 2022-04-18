@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
@@ -17,17 +19,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@DataJpaTest
 class AgentServiceImpTest {
 
-    private  AgentRepository agentRepository;
+    @Autowired
     private AgentDepositRepository agentDepositRepository;
+    private AgentRepository agentRepository;
     private PasswordEncoder passwordEncoder;
     private AgentServiceImp agentServiceImp;
 
     @BeforeEach
     void setUp() {
         agentRepository = Mockito.mock(AgentRepository.class);
-        agentDepositRepository = Mockito.mock(AgentDepositRepository.class);
+//        agentDepositRepository = Mockito.mock(AgentDepositRepository.class);
         passwordEncoder = Mockito.mock(PasswordEncoder.class);
         agentServiceImp = new AgentServiceImp
                 (agentRepository, agentDepositRepository, passwordEncoder);

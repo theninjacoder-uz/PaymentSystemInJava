@@ -1,6 +1,7 @@
 package com.example.paymentsysteminjava.entity.agent;
 
 import com.example.paymentsysteminjava.entity.BaseEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
