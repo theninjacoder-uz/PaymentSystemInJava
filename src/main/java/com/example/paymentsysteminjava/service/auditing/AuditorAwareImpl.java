@@ -1,6 +1,5 @@
 package com.example.paymentsysteminjava.service.auditing;
 
-import com.example.paymentsysteminjava.entity.user.UserEntity;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
