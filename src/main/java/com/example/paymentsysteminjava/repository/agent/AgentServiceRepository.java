@@ -3,8 +3,11 @@ package com.example.paymentsysteminjava.repository.agent;
 import com.example.paymentsysteminjava.entity.agent.AgentServiceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+
+@Repository
 
 public interface AgentServiceRepository extends JpaRepository<AgentServiceEntity, Long> {
 

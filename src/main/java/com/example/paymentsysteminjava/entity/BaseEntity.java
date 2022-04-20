@@ -15,6 +15,7 @@ import java.util.Date;
 @Setter
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
+
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

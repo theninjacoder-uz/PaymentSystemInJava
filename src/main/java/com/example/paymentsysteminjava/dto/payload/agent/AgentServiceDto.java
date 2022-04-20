@@ -1,14 +1,12 @@
 package com.example.paymentsysteminjava.dto.payload.agent;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class AgentServiceDto {
     private double commission;
     private long agentId;

@@ -30,6 +30,8 @@ public class PaymeTransactionService {
 
     @Value("${rabbitMq.topic.route.key.name}")
     private String routingKey;
+
+
     public TransactionEntity createTransaction(
             TransactionEntity transactionEntity,
             MerchantServiceEntity merchantServiceEntity
