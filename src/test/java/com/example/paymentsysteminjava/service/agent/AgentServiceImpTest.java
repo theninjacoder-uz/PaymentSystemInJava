@@ -10,7 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
@@ -20,11 +22,18 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AgentServiceImpTest {
 
     @Autowired
     private AgentDepositRepository agentDepositRepository;
+    @Autowired
     private AgentRepository agentRepository;
+
+    @Autowired
+    private TestEntityManager testEntityManager;
+
+
     private PasswordEncoder passwordEncoder;
     private AgentServiceImp agentServiceImp;
 
@@ -49,9 +58,12 @@ class AgentServiceImpTest {
         agentEntity.setName(user.getName());
         agentEntity.setPassword(user.getPassword());
         agentEntity.setUsername(user.getUsername());
-        AgentEntity savedAgent = agentRepository.save(agentEntity);
+        AgentEntity savedAgent = testEntityManager.persist(agentEntity);
 
-//        Assertions.
+        Assertions.assertNotNull(savedAgent);
+        Assertions.assertEquals("Paynet", savedAgent.getName());
+        Assertions.assertEquals("paynet", savedAgent.getUsername());
+        Assertions.assertEquals("ROLE_AGENT", savedAgent.getPermission());
     }
 
     @Test
