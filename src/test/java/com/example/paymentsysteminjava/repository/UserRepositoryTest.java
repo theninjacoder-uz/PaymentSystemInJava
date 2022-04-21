@@ -7,6 +7,7 @@ public class UserRepositoryTest {
     @Test
     public void findByUsername(){
         UserEntity user  = new UserEntity("me","me","1234");
-        
     }
+
+
 }

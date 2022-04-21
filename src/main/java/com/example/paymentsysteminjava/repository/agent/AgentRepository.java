@@ -15,5 +15,4 @@ public interface AgentRepository extends JpaRepository<AgentEntity, Long> {
     @Query("select a from AgentDepositEntity a where a.agentEntity.username = ?1")
     Optional<AgentDepositEntity> getAgentDepositByUsername(String username);
 
-
 }
