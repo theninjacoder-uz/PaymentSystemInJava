@@ -7,10 +7,16 @@ import com.example.paymentsysteminjava.repository.merchant.MerchantServiceReposi
 import com.example.paymentsysteminjava.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +44,23 @@ public class OsonServiceService {
         osonServiceServiceRepository.save(build);
 
         return "Successfully add";
+
+    }
+
+    public List<OsonServiceEntity> getByPage(int size, int number , boolean desc, String property) {
+        Pageable request;
+        if(desc)
+        request = PageRequest.of(number, size, Sort.Direction.DESC, property);
+        else
+            request = PageRequest.of(number, size, Sort.Direction.ASC, property);
+
+        Page<OsonServiceEntity> all = osonServiceServiceRepository.findAll(request);
+        return all.getContent();
+    }
+
+    public List<OsonServiceEntity> search(String name) {
+
+        return osonServiceServiceRepository.findByNameContainingIgnoreCase(name);
 
     }
 }
