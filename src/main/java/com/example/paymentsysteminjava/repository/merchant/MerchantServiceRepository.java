@@ -7,8 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface MerchantServiceRepository extends JpaRepository<MerchantServiceEntity, Long> {
-    @Query("select m from MerchantServiceEntity m where m.merchantServiceId = ?1")
-    Optional<MerchantServiceEntity> findById(Long id);
+
 
     MerchantServiceEntity findByMerchantServiceId(Long id);
 }
