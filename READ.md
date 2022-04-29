@@ -1,1 +1,1 @@
-[swagger url](http://localhost:8080/swagger-ui/index.html)
+[swagger url](http://localhost:5050/swagger-ui/index.html)

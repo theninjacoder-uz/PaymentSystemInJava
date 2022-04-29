@@ -10,5 +10,6 @@ public interface MerchantServiceRepository extends JpaRepository<MerchantService
     @Query("select m from MerchantServiceEntity m where m.merchantServiceId = ?1")
     Optional<MerchantServiceEntity> findById(Long id);
 
+    @Query("select m from MerchantServiceEntity m where m.merchantServiceId = ?1")
     MerchantServiceEntity findByMerchantServiceId(Long id);
 }

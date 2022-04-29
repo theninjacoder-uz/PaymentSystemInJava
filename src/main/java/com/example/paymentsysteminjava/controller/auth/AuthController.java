@@ -69,8 +69,8 @@ public class AuthController {
     }
 
     @PostMapping("/add/admin")
-    public ResponseEntity<Boolean> addSuperAdmin(@RequestBody UserRegisterDto userRegisterDto){
-        return ResponseEntity.ok(userServiceImp.addSuperAdmin(userRegisterDto));
+    public ResponseEntity<?> addSuperAdmin(@RequestBody UserRegisterDto userRegisterDto){
+        return ResponseEntity.ok(new BaseApiResponse(1, "Admin created", userServiceImp.addSuperAdmin(userRegisterDto)));
     }
 
 

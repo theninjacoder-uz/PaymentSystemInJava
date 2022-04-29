@@ -7,9 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import static org.springframework.http.MediaType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -19,14 +20,19 @@ public class OsonController {
     private final OsonService osonService;
 
     @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
-    @PostMapping("/add/{id}")
-    public ResponseEntity<?> add(@PathVariable("id") Long merchantServId) {
+    @PostMapping(value = "/add/{id}",
+            consumes = {MULTIPART_FORM_DATA_VALUE, MULTIPART_MIXED_VALUE})
+    public ResponseEntity<?> add(@PathVariable("id") Long merchantServId,
+                                 @RequestParam(name = "file") MultipartFile file) {
 
-        Boolean add = osonService.add(merchantServId);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(osonService.add(merchantServId, file));
+    }
 
-        if (add)
-            return ResponseEntity.ok().body(new BaseApiResponse(1, "Created", true));
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new BaseApiResponse(0, "creation error", false));
+    @GetMapping(value = "/get/list")
+    public ResponseEntity<?> getList(@RequestParam("page") Integer page,
+                                  @RequestParam("size") Integer size,
+                                  @RequestParam("sortByName") String sortByName)
+    {
+        return ResponseEntity.ok(osonService.getList(page, size, sortByName));
     }
 }
