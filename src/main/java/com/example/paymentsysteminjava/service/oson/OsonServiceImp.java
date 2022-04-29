@@ -8,7 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.print.Pageable;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,7 +23,7 @@ public class OsonServiceImp implements OsonService{
     private final ModelMapper modelMapper;
 
     @Override
-    public Boolean add(Long merchantServiceId) {
+    public Boolean add(Long merchantServiceId, MultipartFile file) {
 
         MerchantServiceEntity merchantServiceEntity
                 = merchantServiceRepository.findByMerchantServiceId(merchantServiceId);
@@ -35,4 +38,8 @@ public class OsonServiceImp implements OsonService{
 
         return true;
     }
+
+
+
+
 }

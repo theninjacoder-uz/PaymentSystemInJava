@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -20,13 +22,18 @@ public class OsonController {
 
     @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping("/add/{id}")
-    public ResponseEntity<?> add(@PathVariable("id") Long merchantServId) {
+    public ResponseEntity<?> add(
+            @PathVariable("id") Long merchantServId,
+            @RequestParam(name = "file") MultipartFile file
+    ) {
 
-        Boolean add = osonService.add(merchantServId);
+        Boolean add = osonService.add(merchantServId, file);
 
         if (add)
             return ResponseEntity.ok().body(new BaseApiResponse(1, "Created", true));
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new BaseApiResponse(0, "creation error", false));
     }
+
+    @PreAuthorize("has")
 }

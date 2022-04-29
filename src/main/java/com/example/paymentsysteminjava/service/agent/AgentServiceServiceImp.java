@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 public class AgentServiceServiceImp implements AgentServiceService{
 
     private final AgentServiceRepository agentServiceRepository;
-//    private final ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+
 
     @Override
     public BaseApiResponse add(AgentServiceDto agentServiceDto) {
@@ -24,12 +25,7 @@ public class AgentServiceServiceImp implements AgentServiceService{
         ).isPresent())
             return new BaseApiResponse(11, "Service Already exist", null);
 
-        AgentServiceEntity agentServiceEntity = new AgentServiceEntity();
-        agentServiceEntity.setServiceId(agentServiceDto.getServiceId());
-        agentServiceEntity.setAgentId(agentServiceDto.getAgentId());
-        agentServiceEntity.setCommission(agentServiceDto.getCommission());
-
-        agentServiceRepository.save(agentServiceEntity);
-        return new BaseApiResponse(1, "Service Added", agentServiceEntity);
+        var entity = agentServiceRepository.save(modelMapper.map(agentServiceDto, AgentServiceEntity.class));
+        return new BaseApiResponse(1, "Service Added", entity);
     }
 }

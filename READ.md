@@ -1,1 +1,1 @@
-[swagger url](http://localhost:8080/swagger-ui/index.html)
+[swagger url](http://ec2-54-248-41-92.ap-northeast-1.compute.amazonaws.com:8080/swagger-ui/index.html)
