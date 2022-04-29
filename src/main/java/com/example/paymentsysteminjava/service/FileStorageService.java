@@ -22,7 +22,7 @@ public class FileStorageService {
 
     @Autowired
     public FileStorageService() {
-        this.baseStoreUrl = "/Users/ismoilovdavron/Documents/mac/PDP/PaymentSystemInJava/img";
+        this.baseStoreUrl = "/home/ubuntu/img";
         this.fileStorageLocation = Paths.get(baseStoreUrl).
             toAbsolutePath().normalize();
 

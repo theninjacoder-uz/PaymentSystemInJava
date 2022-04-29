@@ -60,7 +60,7 @@ public class OsonServiceService {
 
     public List<OsonServiceEntity> search(String name) {
 
-        return osonServiceServiceRepository.findByNameContainingIgnoreCase(name);
+        return osonServiceServiceRepository.searchByNameLike(name);
 
     }
 }
